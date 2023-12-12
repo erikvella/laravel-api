@@ -16,7 +16,9 @@ class PageController extends Controller
     public function getProjectBySlug($slug){
 // faccio  una query che mi prenda il progetto con lo slug che passo
       $project = Project::where('slug' , $slug)->with('type' , 'tecnologies')->first();
-      return response()->json($project);
+      if($project) $success = true;
+      else $success = false;
+      return response()->json(compact('project' , 'success'));
     }
 
 
