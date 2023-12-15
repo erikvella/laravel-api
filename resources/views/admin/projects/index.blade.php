@@ -17,7 +17,7 @@
                         <a href="{{ route('admin.order-by', ['direction' => $direction, 'column' => 'title']) }}">Nome
                             Progetto</a>
                     </th>
-                    <th scope="col">Descrizione progetto</th>
+
                     <th scope="col">Tipologia progetto</th>
                     <th scope="col">Tecnologie usate</th>
                     <th scope="col">
@@ -33,7 +33,7 @@
 
                         <td>{{ $project->id }}</td>
                         <td>{{ $project->title }}</td>
-                        <td>{{ $project->text }}</td>
+
                         <td>{{ $project->type?->name ?? '-' }}</td>
                         <td>
                             @forelse ($project->tecnologies as $tecnology)

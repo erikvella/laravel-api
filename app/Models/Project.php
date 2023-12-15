@@ -21,9 +21,15 @@ class Project extends Model
       return $this->belongsToMany(Tecnology::class);
     }
 
+    public function user(){
+ // relazione con la tabella users
+// la funzione deve essere al singolare perchè il progetto ha un solo user
+// a questa funzione accederò come una proprietà della classe Project
+        return $this->belongsTo(User::class);
+    }
 
     protected $fillable = [
-        'title' , 'type_id' , 'slug' , 'text' , 'date' , 'image' , 'image_original_name'
+        'title' ,'user_id' , 'type_id' , 'slug' , 'text' , 'date' , 'image' , 'image_original_name'
     ];
 
 }

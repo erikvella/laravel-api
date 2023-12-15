@@ -11,7 +11,7 @@ use App\Models\Type;
 class PageController extends Controller
 {
     public function index(){
-        $projects = Project::with('tecnologies' , 'type')->paginate(20);
+        $projects = Project::with('tecnologies' , 'type' , 'user')->paginate(20);
         return response()->json($projects);
     }
 

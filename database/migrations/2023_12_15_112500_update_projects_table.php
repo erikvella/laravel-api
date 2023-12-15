@@ -12,13 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            // creo la colonna della foreign key
-            $table->unsignedBigInteger('type_id')->nullable()->after('id');
+            $table->unsignedBigInteger('user_id')->nullable()->after('id');
             // assegno la foreign key alla colonna creata
-            $table->foreign('type_id')
+            $table->foreign('user_id')
                   ->references('id')
-                  ->on('types')
-                  ->onDelete('set null');
+                  ->on('users')
+                  ->CascadeOnDelete();
         });
     }
 
@@ -28,10 +27,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            // elimino la foreign key
-            $table->dropForeign(['type_id']);
-            // elimino la colonna delle foreign key
-            $table->dropColumn('type_id');
+             // elimino la foreign key
+             $table->dropForeign(['user_id']);
+             // elimino la colonna delle foreign key
+             $table->dropColumn('user_id');
         });
     }
 };

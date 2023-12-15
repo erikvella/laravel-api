@@ -10,6 +10,7 @@ use App\Models\Tecnology;
 use App\Http\Requests\ProjectRequest;
 use App\Functions\Helper;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -22,10 +23,11 @@ class ProjectController extends Controller
     {
         if(isset($_GET['toSearch'])){
 
-            $project = Project::where('title' , 'LIKE' , '%' , $_GET['toSearch'] , '%')->paginate(20);
+            $project = Project::where('user_id' , Auth::id())
+                         ->where('title' , 'LIKE' , '%' , $_GET['toSearch'] , '%')->paginate(20);
         }else{
 
-            $projects = Project::orderBy('id' , 'desc')->paginate(20);
+            $projects = Project::where('user_id' , Auth::id())->orderBy('id' , 'desc')->paginate(20);
         }
 
        $direction = 'desc';
@@ -84,6 +86,8 @@ if(array_key_exists('image' , $form_data)){
     $form_data['image'] = Storage::put('uploads', $form_data['image']);
 
 }
+// salvo l'id dello user che crea il progetto
+$form_data['user_id'] = Auth::id();
 
 $new_project = Project::create($form_data);
 
@@ -107,6 +111,10 @@ $new_project->tecnologies()->attach($form_data['tecnologies']);
      */
     public function show(Project $project)
     {
+        // creo una funziona secondo la quale se l'id del post non è in relazione con l'id dello user mi porta alla pagina 404
+        if($project->user_id != Auth::id()){
+            abort(404);
+        }
         return view('admin.projects.show' , compact('project'));
     }
 
@@ -118,6 +126,12 @@ $new_project->tecnologies()->attach($form_data['tecnologies']);
      */
     public function edit(Project $project)
     {
+
+         // creo una funziona secondo la quale se l'id del post non è in relazione con l'id dello user mi porta alla pagina 404
+         if($project->user_id != Auth::id()){
+            abort(404);
+        }
+
         $title = 'Modifica il progetto';
         $method = 'PUT';
         $types = Type::all();
