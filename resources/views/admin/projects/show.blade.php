@@ -2,9 +2,12 @@
 
 @section('content')
     <div class="container d-flex flex-column">
-        <h1>Titolo del progetto: {{ $project->title }} <a class="btn btn-warning mx-3 "
-                href="{{ route('admin.projects.edit', $project) }}">Modifica
-                progetto</a></h1>
+        <h1>Titolo del progetto: {{ $project->title }}
+            <a class="btn btn-warning mx-3 " href="{{ route('admin.projects.edit', $project) }}">Modifica
+                progetto</a>
+            <a class="btn btn-primary mx-3 " href="{{ route('admin.duplicate-project', $project) }}">Duplica
+                progetto</a>
+        </h1>
 
         @if ($project->type)
             <p>Tipologia : <strong>{{ $project->type->name }}</strong></p>

@@ -44,6 +44,19 @@ class ProjectController extends Controller
     }
 
 
+    public function duplicateProject(Project $project){
+        $new_project = $project->replicate();
+        $new_project->slug = Helper::generateSlug($project->title , Project::class);
+        $new_project->save();
+
+        $tecnologiesId = [];
+        foreach($project->tecnologies as $tecnology){
+            $tecnologiesId[] = $tecnology->id;
+        }
+
+        $new_project->tecnologies()->attach($tecnologiesId);
+         return redirect()->route('admin.projects.index' , $new_project);
+    }
 
 
 
