@@ -11,6 +11,7 @@ use App\Http\Requests\ProjectRequest;
 use App\Functions\Helper;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class ProjectController extends Controller
 {
@@ -47,6 +48,24 @@ class ProjectController extends Controller
     public function duplicateProject(Project $project){
         $new_project = $project->replicate();
         $new_project->slug = Helper::generateSlug($project->title , Project::class);
+
+        // duplicazione dell'immagine
+        if($project->image){
+            // prendo il percorso dell'immagine
+            $old_img_path = public_path('storage/' . $project->image);
+            // prendo le info del file per avere l'estensione dell'immagine
+            $old_info_img = pathinfo($old_img_path);
+            // prendo l'estensione
+            $extension = $old_info_img['extension'];
+            // creo il nome della nuova immgine
+            $new_img_name = 'uploads' . $new_project->slug . '.' . $extension;
+            // genero il nuovo path della nuova immagine
+            $new_path = public_path('storage/' . $new_img_name);
+            // duplico il file
+            File::copy($old_img_path , $new_path);
+            // aggiungo il nuovo percorso all'elemento da salvare nel DB
+            $new_project->image = $new_img_name;
+        }
         $new_project->save();
 
         $tecnologiesId = [];
