@@ -23,6 +23,6 @@ Route::get('/projects-by-type/{type_slug}' , [PageController::class , 'getProjec
 Route::get('/projects-by-tecnology/{tecnology_slug}' , [PageController::class , 'getProjectsByTecnology']);
 Route::get('/projects/get-project/{slug}' , [PageController::class , 'getProjectBySlug']);
 Route::get('/search/{tosearch}' , [PageController::class , 'search']);
-Route::get('/send-email' , [LeadController::class , 'store']);
+Route::post('/send-email' , [LeadController::class , 'store']);
 
 
