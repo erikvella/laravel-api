@@ -15,9 +15,9 @@ class LeadController extends Controller
         // verifico la validità dei dati ricevuti
         $validator = Validator::make($data,
         [
-           'name' => 'required'|'min:2'|'max:255',
-           'email' => 'required'|'min:2'|'max:255',
-           'message' => 'required'|'min:2',
+           'name' => 'required|min:2|max:255',
+           'email' => 'required|min:2|max:255',
+           'message' => 'required|min:2',
         ],
         [
             'name.required' => 'Il nome è un campo obbligatorio',
