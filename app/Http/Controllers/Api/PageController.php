@@ -27,7 +27,7 @@ class PageController extends Controller
 
     public function getProjectBySlug($slug){
 // faccio  una query che mi prenda il progetto con lo slug che passo
-      $project = Project::where('slug' , $slug)->with('type' , 'tecnologies')->first();
+      $project = Project::where('slug' , $slug)->with('type' , 'tecnologies' , 'user')->first();
 // se è presente l'immagine con il metodo asset ricavo l'URL assoluto
       if($project->image){
         $project->image = asset('storage/' . $project->image);

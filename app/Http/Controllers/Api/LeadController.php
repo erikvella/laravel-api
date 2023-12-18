@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Lead;
+use App\Mail\NewContact;
 
 class LeadController extends Controller
 {
     public function store(Request $request){
         // ricevo i dati dal client
         $data = $request->all();
-        // return response()->json($data);
+
         // verifico la validità dei dati ricevuti
         $validator = Validator::make($data,
         [
@@ -37,12 +40,15 @@ class LeadController extends Controller
         $errors = $validator->errors();
         return response()->json(compact('success' , 'errors'));
     }
-    // // se non ci sono errori
+    // // se non ci sono errori:
 
     // // 1 salvo i dati nel DB
-
+    $new_lead = new Lead();
+    $new_lead->fill($data);
+    $new_lead->save();
     // // 2 invio l'email
 
+    Mail::to('info@boolfolio.com')->send(new NewContact($new_lead));
     // // 3 restituisco success = true
         $success = true;
         return response()->json(compact('success'));
